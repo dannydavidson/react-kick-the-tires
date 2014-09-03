@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>{{title}}</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"
+  />
+  <meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+  />
+  <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="/global.css{{#unless dev}}?v={{{hash}}}{{/unless}}" media="screen" charset="utf-8">{{#if dev}}
+  <script>
+    document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':{{livereloadPort}}/livereload.js?snipver=1"></' + 'script>')
+  </script>
+  {{/if}}
+</head>
+
+<body>
+  <div id="app"></div>
+  <div id="page-loader">
+    <div class="spinner">
+      <div class="dot1"></div>
+      <div class="dot2"></div>
+    </div>
+    <h2 class="prompt">Loading</h2>
+  </div>
+</body>
+<script>
+  window.Config = {
+    'FIREBASE_URL': '{{{firebaseUrl}}}'
+  };
+</script>
+<script src="https://cdn.firebase.com/js/client/1.0.21/firebase.js"></script>
+<script src="https://cdn.firebase.com/js/simple-login/1.6.4/firebase-simple-login.js"></script>
+{{#each scripts}}
+<script src="/{{{this}}}"></script>
+{{/each}}
+</html>

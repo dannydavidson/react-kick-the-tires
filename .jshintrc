@@ -1,0 +1,40 @@
+{
+  "maxerr": 50,
+  "bitwise": true,
+  "camelcase": true,
+  "curly": true,
+  "eqeqeq": true,
+  "forin": true,
+  "immed": true,
+  "indent": 2,
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "noempty": true,
+  "nonew": false,
+  "plusplus": true,
+  "quotmark": false,
+  "undef": true,
+  "unused": true,
+  "strict": false,
+  "maxparams": 5,
+  "maxdepth": 5,
+  "maxstatements": false,
+  "maxcomplexity": false,
+  "maxlen": 120,
+  "newcap": false,
+
+  "browser": true,
+  "browserify": true,
+  "node": true,
+  "nonstandard": true,
+  "worker": false,
+
+  "globals": {
+    "Firebase": true,
+    "jest": true,
+    "describe": true,
+    "it": true,
+    "expect": true
+  }
+}
