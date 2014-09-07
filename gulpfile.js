@@ -20,6 +20,14 @@ var _ = require('lodash'),
   componentStylesPath = './app/components',
   componentStylesMatcher = componentStylesPath + '/**/*.less',
 
+  // webpack config paths
+  webpackProdConfig = require('./webpack.config.prod.js'),
+  webpackDevConfig = require('./webpack.config.dev.js'),
+
+  // firebase urls
+  firebaseStagingUrl = 'https://stage-react-kick-it.firebaseio.com',
+  firebaseProdUrl = 'https://react-kick-it.firebaseio.com',
+
   styleFileMatcher = function (matchLess) {
     return globalStylesPath + '/**/*.' + (matchLess ? 'less' : 'css');
   },
@@ -41,12 +49,13 @@ var _ = require('lodash'),
       });
   },
 
-  writePage = function (err, result, isDev) {
+  writePage = function (err, result, isDev, firebaseUrl) {
     if (err) throw new gutil.PluginError("webpack", err);
     var stats = result.toJson(),
       context = {
         title: packageConfig.description,
         hash: stats.hash,
+        firebaseUrl: firebaseUrl,
         dev: isDev,
         scripts: _(stats.assets)
           .chain()
@@ -92,14 +101,22 @@ gulp.task('less', function () {
 });
 
 gulp.task('webpack-dev', ['clean'], function () {
-  webpack(require('./webpack.config.dev.js'), function (err, result) {
-    writePage(err, result, true);
+  webpack(webpackDevConfig, function (err, result) {
+    writePage(err, result, true, firebaseStagingUrl);
+  });
+});
+
+gulp.task('webpack-stage', ['clean'], function (done) {
+  webpack(webpackProdConfig, function (err, result) {
+    writePage(err, result, false, firebaseStagingUrl)
+      .pipe(synchro(done));
   });
 });
 
 gulp.task('webpack-prod', ['clean'], function (done) {
-  webpack(require('./webpack.config.prod.js'), function (err, result) {
-    writePage(err, result).pipe(synchro(done));
+  webpack(webpackProdConfig, function (err, result) {
+    writePage(err, result, false, firebaseProdUrl)
+      .pipe(synchro(done));
   });
 });
 
@@ -109,9 +126,10 @@ gulp.task('runserver', shell.task('node server.js'));
 
 gulp.task('watch', function () {
   gulp.watch([styleFileMatcher(), styleFileMatcher(true), componentStylesMatcher], ['cssmin']);
+  gulp.watch('./app/**/*.html', ['cssmin', 'webpack-dev']);
 });
 
-gulp.task('deploy', ['cssmin', 'webpack-prod', 'test'], function () {
+gulp.task('stage', ['cssmin', 'webpack-stage', 'test'], function () {
   return fbDeploy('./stage.firebase.json');
 });
 

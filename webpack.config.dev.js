@@ -11,8 +11,8 @@ module.exports = {
   },
   output: {
     path: __dirname + '/public',
-    filename: "[name].[hash].js",
-    chunkFilename: "[name].[id].[hash].js"
+    filename: "[name].[chunkhash].js",
+    chunkFilename: "[name].[id].[chunkhash].js"
   },
   module: {
     loaders: [
