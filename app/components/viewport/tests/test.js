@@ -1,12 +1,12 @@
 /** @jsx React.DOM */
 
-jest.dontMock('../../app');
+jest.dontMock('../index');
 
 describe('Component app', function () {
 
   it('renders properly', function () {
     var React = require('react/addons');
-    var App = require('../../app');
+    var App = require('../index');
     var TestUtils = React.addons.TestUtils;
     var text = 'This is a headline';
 

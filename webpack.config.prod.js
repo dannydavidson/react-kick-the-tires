@@ -2,8 +2,6 @@ var webpack = require('webpack'),
   AppCachePlugin = require('appcache-webpack-plugin');
 
 module.exports = {
-  watch: true,
-  devtool: 'source-map',
   target: 'web',
   entry: {
     "main": "./app/main.js",
@@ -12,7 +10,7 @@ module.exports = {
   output: {
     path: __dirname + '/public',
     filename: "[name].[hash].js",
-    chunkFilename: "[name].[id].[hash].js"
+    chunkFilename: "[name].[hash].js"
   },
   module: {
     loaders: [
@@ -34,6 +32,11 @@ module.exports = {
   plugins: [
     new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.[hash].js"),
     new webpack.IgnorePlugin(/vertx/),
-    new webpack.optimize.OccurenceOrderPlugin(true)
+    new webpack.optimize.OccurenceOrderPlugin(true),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: true,
+      mangle: true
+    }),
+    new AppCachePlugin()
   ]
 };
