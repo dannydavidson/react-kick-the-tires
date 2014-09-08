@@ -5,7 +5,7 @@ var _ = require('lodash'),
   gutil = require('gulp-util'),
   rename = require('gulp-rename'),
   minifyHTML = require('gulp-minify-html'),
-  clean = require('gulp-clean'),
+  clean = require('gulp-rimraf'),
   shell = require('gulp-shell'),
   webpack = require('webpack'),
   handlebars = require('gulp-compile-handlebars'),
@@ -77,10 +77,8 @@ var _ = require('lodash'),
   };
 
 gulp.task('clean', function () {
-  return gulp.src('./public')
-    .pipe(clean({
-      read: false
-    }));
+  return gulp.src('./public/**/*', {read: false})
+    .pipe(clean());
 })
 
 gulp.task('default', ['dev']);
